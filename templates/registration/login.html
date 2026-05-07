@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="mb-0">Acceso al sistema</h4>
+            </div>
+
+            <div class="card-body">
+                <p class="text-muted text-center">
+                    Ingrese sus credenciales institucionales.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <button class="btn btn-primary w-100 mt-3" type="submit">
+                        Iniciar sesión
+                    </button>
+                </form>
+
+                <hr>
+
+                <div class="small text-muted">
+                    <p class="mb-1"><strong>Usuarios de prueba:</strong></p>
+                    <p class="mb-1">julio / Estudiante123</p>
+                    <p class="mb-1">william / Estudiante123</p>
+                    <p class="mb-1">diego / Estudiante123</p>
+                    <p class="mb-1">mike / Estudiante123</p>
+                    <p class="mb-1">docente / Docente123</p>
+                    <p class="mb-1">admin / Admin12345</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

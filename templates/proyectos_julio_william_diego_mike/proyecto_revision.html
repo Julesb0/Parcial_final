@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Revisión del proyecto{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Revisión docente</h4>
+            </div>
+
+            <div class="card-body">
+                <p>
+                    <strong>Proyecto:</strong> {{ object.titulo }}
+                </p>
+
+                <p>
+                    <strong>Estudiante:</strong> {{ object.estudiante.username }}
+                </p>
+
+                <p class="text-muted">
+                    El docente puede cambiar el estado del proyecto y asignar la calificación.
+                    Cuando el estado sea aprobado, el sistema bloqueará nuevos comentarios.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-dark">
+                            Guardar revisión
+                        </button>
+
+                        <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_detail' object.pk %}" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

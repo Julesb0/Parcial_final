@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Proyectos académicos{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Proyectos académicos</h2>
+        <p class="text-muted mb-0">
+            Consulte, filtre y gestione los proyectos registrados.
+        </p>
+    </div>
+
+    {% if not es_docente %}
+        <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_create' %}" class="btn btn-primary">
+            Nuevo proyecto
+        </a>
+    {% endif %}
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label">Estado</label>
+                <select name="estado" class="form-select">
+                    <option value="">Todos</option>
+                    {% for value, label in estados %}
+                        <option value="{{ value }}" {% if estado_actual == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if es_docente %}
+                <div class="col-md-4">
+                    <label class="form-label">Estudiante</label>
+                    <select name="estudiante" class="form-select">
+                        <option value="">Todos</option>
+                        {% for estudiante in estudiantes %}
+                            <option value="{{ estudiante.id }}" {% if estudiante_actual == estudiante.id|stringformat:"s" %}selected{% endif %}>
+                                {{ estudiante.username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-outline-primary">
+                    Filtrar
+                </button>
+
+                <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_list' %}" class="btn btn-outline-secondary">
+                    Limpiar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if es_docente %}
+<div class="mb-3 d-flex gap-2">
+    <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_export_csv' %}?estado={{ estado_actual }}&estudiante={{ estudiante_actual }}" class="btn btn-success btn-sm">
+        Exportar CSV
+    </a>
+
+    <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_export_pdf' %}?estado={{ estado_actual }}&estudiante={{ estudiante_actual }}" class="btn btn-danger btn-sm">
+        Exportar PDF
+    </a>
+</div>
+{% endif %}
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-primary">
+                <tr>
+                    <th>Título</th>
+                    <th>Estudiante</th>
+                    <th>Estado</th>
+                    <th>Fecha de envío</th>
+                    <th>Calificación</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for proyecto in proyectos %}
+                    <tr>
+                        <td class="fw-semibold">{{ proyecto.titulo }}</td>
+                        <td>{{ proyecto.estudiante.username }}</td>
+                        <td>
+                            <span class="badge estado-{{ proyecto.estado }}">
+                                {{ proyecto.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>{{ proyecto.fecha_envio|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            {% if proyecto.calificacion %}
+                                {{ proyecto.calificacion }}
+                            {% else %}
+                                Sin asignar
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_detail' proyecto.pk %}" class="btn btn-sm btn-outline-primary">
+                                Ver
+                            </a>
+
+                            {% if es_docente %}
+                                <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_revision' proyecto.pk %}" class="btn btn-sm btn-outline-dark">
+                                    Revisar
+                                </a>
+                            {% else %}
+                                <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_update' proyecto.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    Editar
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            No hay proyectos registrados.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

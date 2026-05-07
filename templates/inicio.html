@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <h1>Sistema de Seguimiento de Proyectos Académicos</h1>
+
+    <p>
+        Plataforma académica desarrollada para registrar, revisar y aprobar proyectos,
+        facilitando la comunicación entre estudiantes y docentes mediante comentarios,
+        estados de revisión y notificaciones por correo electrónico.
+    </p>
+
+    <div class="integrantes-box">
+        <h5>Integrantes</h5>
+        <p>Julio - William - Diego - Mike</p>
+    </div>
+
+    {% if user.is_authenticated %}
+        <a href="/proyectos/" class="btn btn-primary">
+            Ver proyectos
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">
+            Iniciar sesión
+        </a>
+    {% endif %}
+</section>
+
+{% endblock %}
