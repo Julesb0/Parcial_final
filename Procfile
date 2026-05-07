@@ -1,0 +1,1 @@
+web: gunicorn seguimiento_julio_william_diego_mike.wsgi --log-file -
