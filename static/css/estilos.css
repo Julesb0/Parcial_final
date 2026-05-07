@@ -37,6 +37,37 @@ body {
     border-radius: 14px;
 }
 
+.table th {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.badge {
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.estado-enviado {
+    background-color: #0d6efd;
+}
+
+.estado-revision {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.estado-aprobado {
+    background-color: #198754;
+}
+
+.comentario-box {
+    border-left: 4px solid #0d6efd;
+    padding: 10px 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
 .footer-universidad {
     margin-top: 60px;
     padding: 20px;

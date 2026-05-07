@@ -87,7 +87,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'inicio'
+LOGIN_REDIRECT_URL = 'proyectos_julio_william_diego_mike:proyecto_list'
 LOGOUT_REDIRECT_URL = 'login'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'

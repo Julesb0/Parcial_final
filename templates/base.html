@@ -21,6 +21,12 @@
 
                 {% if user.is_authenticated %}
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'proyectos_julio_william_diego_mike:proyecto_list' %}">
+                            Proyectos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <span class="nav-link">
                             Usuario: {{ user.username }}
                         </span>

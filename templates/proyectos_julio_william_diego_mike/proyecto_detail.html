@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Detalle del proyecto{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{ proyecto.titulo }}</h4>
+            </div>
+
+            <div class="card-body">
+                <p class="text-muted mb-2">
+                    Registrado por: <strong>{{ proyecto.estudiante.username }}</strong>
+                </p>
+
+                <p>{{ proyecto.descripcion }}</p>
+
+                <hr>
+
+                <p>
+                    <strong>Estado:</strong>
+                    <span class="badge estado-{{ proyecto.estado }}">
+                        {{ proyecto.get_estado_display }}
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Fecha de envío:</strong>
+                    {{ proyecto.fecha_envio|date:"d/m/Y H:i" }}
+                </p>
+
+                <p>
+                    <strong>Fecha de revisión:</strong>
+                    {% if proyecto.fecha_revision %}
+                        {{ proyecto.fecha_revision|date:"d/m/Y H:i" }}
+                    {% else %}
+                        Sin revisión
+                    {% endif %}
+                </p>
+
+                <p>
+                    <strong>Calificación:</strong>
+                    {% if proyecto.calificacion %}
+                        {{ proyecto.calificacion }}
+                    {% else %}
+                        Sin asignar
+                    {% endif %}
+                </p>
+
+                <a href="{{ proyecto.documento.url }}" class="btn btn-outline-primary" target="_blank">
+                    Ver documento
+                </a>
+
+                {% if es_docente %}
+                    <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_revision' proyecto.pk %}" class="btn btn-dark">
+                        Revisar proyecto
+                    </a>
+                {% else %}
+                    <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_update' proyecto.pk %}" class="btn btn-secondary">
+                        Editar
+                    </a>
+
+                    <a href="{% url 'proyectos_julio_william_diego_mike:proyecto_delete' proyecto.pk %}" class="btn btn-outline-danger">
+                        Eliminar
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Comentarios</h5>
+            </div>
+
+            <div class="card-body">
+
+                {% for comentario in proyecto.comentarios.all %}
+                    <div class="comentario-box">
+                        <p class="mb-1">{{ comentario.texto }}</p>
+                        <small class="text-muted">
+                            {{ comentario.usuario.username }} -
+                            {{ comentario.fecha|date:"d/m/Y H:i" }}
+                        </small>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">
+                        Este proyecto aún no tiene comentarios.
+                    </p>
+                {% endfor %}
+
+                <hr>
+
+                {% if proyecto.bloquea_comentarios %}
+                    <div class="alert alert-warning">
+                        El proyecto está aprobado. No se permiten nuevos comentarios.
+                    </div>
+                {% else %}
+                    <form method="post" action="{% url 'proyectos_julio_william_diego_mike:comentario_create' proyecto.pk %}">
+                        {% csrf_token %}
+                        {{ comentario_form|crispy }}
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Publicar comentario
+                        </button>
+                    </form>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
